@@ -1,0 +1,9 @@
+<!-- Add you custom twig html here -->
+
+
+<div class="calendar-event-{{ nid }} add-to-calendar-field">
+    {{ send_email_link }}
+    {{  googleAddCal }}
+    <a class="close-cal-menu" download="SMA-Event.ics" id="{{ nid }}" href="{{ icsAddCal }}">iCal</a>
+    {{ yahooAddCal }}
+</div>
