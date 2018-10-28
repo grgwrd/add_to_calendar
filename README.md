@@ -1,4 +1,4 @@
-## Add to Calendar Field Module for Drupal 8 view.
+## Add to Calendar Field module for Drupal 8 view.
 
 Custom module to generate calendar links for adding event to calendar with Google, Yahoo, ICS file download and Send Email Modal.
 
