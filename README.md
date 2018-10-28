@@ -6,7 +6,7 @@ Custom module to generate calendar links for adding event to calendar with Googl
 
 ### Requirements:
 
-After installing and activating the module you will need the following setup.
+You will need to clone or download the git project and add it to your modules directory. After installing and activating the module you will need the following setup.
 
 #### Create new Content Type for Event Calendar with the field names
 
