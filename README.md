@@ -28,4 +28,4 @@ After installing and activating the module you will need the following setup.
   - Filter by content and search for you Event Calendar content type
 - Add the field from Add to Calendar module
   - Filter by Global and search for add to calendar
-  - ** Be sure to install and enable the Add to Calendar Field Module **
+  - **Be sure to install and enable the Add to Calendar Field Module**
