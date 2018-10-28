@@ -1,5 +1,5 @@
 name: 'Add to Calendar Field'
 type: module
-description: 'Add to calendar field for SMA calendar feed'
+description: 'Add to Calendar Field for Calendar Feed View'
 core: 8.x
-package: 'SMA Modules'
+package: 'Custom Modules'

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 8/20/18
- * Time: 1:32 PM
- */
-
 namespace Drupal\add_to_calendar_field\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -57,14 +50,14 @@ class CalendarController extends ControllerBase {
 
     public function sendEventEmail(NodeInterface $node) {
 
-        $smaEvent = new Event($node->id());
+        $addEvent = new Event($node->id());
 
-        $location = $smaEvent->getLocation();
-        $description = $smaEvent->getDescription();
-        $title = $smaEvent->getTitle();
+        $location = $addEvent->getLocation();
+        $description = $addEvent->getDescription();
+        $title = $addEvent->getTitle();
 
-        $to = $smaEvent->getTo();
-        $from = $smaEvent->getFrom();
+        $to = $addEvent->getTo();
+        $from = $addEvent->getFrom();
 
 
         $link = LinkCal::create($title, $from, $to)
@@ -86,9 +79,6 @@ class CalendarController extends ControllerBase {
         ];
 
         $response = new AjaxResponse();
-
-        // Get the modal form using the form builder.
-  //      $modal_form = $this->formBuilder->getForm('Drupal\add_to_calendar_field\Form\ModalForm');
 
         // Add an AJAX command to open a modal dialog with the form as the content.
         $response->addCommand(new OpenModalDialogCommand('Add to Calendar', $modal_form, $options));

@@ -18,7 +18,6 @@ class Ics implements Generator
           'SUMMARY:'.$link->title, ];
 
         if ($link->description) {
-//            $url[] = 'DESCRIPTION:'.addcslashes($link->description, "\n");
             $url[] = 'DESCRIPTION:'.$link->description;
         }
         if ($link->address) {

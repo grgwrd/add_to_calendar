@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 9/19/18
- * Time: 3:37 PM
- */
-
 namespace Drupal\add_to_calendar_field\Entity;
 use \Datetime;
 use \Datetimezone;
@@ -58,17 +51,17 @@ class Event
 
         $node = Node::load($nid);
 
+        $title = $node->get('title')->getValue();
+        $this->setTitle($title[0]['value']);
+
+        $location = $node->get('field_event_location')->getValue();
+        $this->setLocation($location[0]['value']);
+
         $startDate = $node->get('field_event_start_date_time')->getValue();
         $this->setStartDate($startDate);
 
         $endDate = $node->get('field_event_end_date_time')->getValue();
         $this->setEndDate($endDate);
-
-        $location = $node->get('field_event_specific_location')->getValue();
-        $this->setLocation($location[0]['value']);
-
-        $title = $node->get('title')->getValue();
-        $this->setTitle($title[0]['value']);
 
         $description = $node->get('field_event_description')->getValue();
         $this->setDescription($description[0]['value']);

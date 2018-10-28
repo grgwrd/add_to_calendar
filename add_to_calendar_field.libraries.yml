@@ -1,13 +1,4 @@
-global_css:
-  version: 1.x
-  css:
-    layout:
-      css/add_to_calendar_field.css: {}
-    theme:
-      css/add_to_calendar_field.css: {}
 global_js:
-  js:
-    js/add_to_calendar_field.js: {}
   dependencies:
     - core/jquery
     - core/drupal
