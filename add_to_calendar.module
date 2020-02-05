@@ -145,7 +145,7 @@ function getNodeCalendarEvent($nid)
 
       $fieldName = $contentConfig->get($field);
       if($fieldName){
-        $data = $node->get($contentConfig->get($field))->getValue();
+        $data = $node->get($fieldName)->getValue();
         if ($data) {
           $eventData[$field] = $data;
         } else {
@@ -153,7 +153,6 @@ function getNodeCalendarEvent($nid)
         }
       }
     }
-  //  die(dump($eventData));
     $event = new Event(
       $eventData['field_name_for_title_of_event'][0]['value'],
       $eventData['field_name_for_start_date'][0]['value'],
@@ -177,7 +176,7 @@ function getCalendarEventLinks($nid)
 
 function getCalendarEventFields($nid, LinkCal $link){
   $linkConfigs = Drupal::config('calendar_links_type.settings');
-  $eventFields = NULL;
+  $calendarEvents = NULL; //return calendar events to front page
   if($linkConfigs){
     //configuration keys for form
     $fields = ['send_email', 'google', 'yahoo', 'download_ics'];
@@ -186,7 +185,6 @@ function getCalendarEventFields($nid, LinkCal $link){
     foreach ($fields as $field) {
       $linkFields[$field] = $linkConfigs->get($field);
     }
-    $calendarEvents = []; //return calendar events to front page
     /*
      * configurations are set to TRUE by default when installed
      * otherwise they are set in admin configuration
@@ -241,10 +239,9 @@ function getCalendarEventFields($nid, LinkCal $link){
         '#url' => $url
       ];
     }
-    $eventFields = $calendarEvents;
   }
   /*
    * function for calendar event links based on admin configurations
    */
-  return $eventFields;
+  return $calendarEvents;
 }
