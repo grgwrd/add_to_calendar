@@ -29,4 +29,4 @@
 * Look under the Global category and select Add To Calendar Field.
 * Then it should display as part of your view.
 
-** *Adding the Add to Calendar field to your view will destroy your view if you ever decide to uninstall the Add To Calendar Field module. Be sure to delete the Add To Calendar field from your views before uninstalling the module. 
+** *Adding the Add to Calendar field to your view will destroy your view if you ever decide to uninstall the Add To Calendar Field module. Be sure to delete the Add To Calendar field from your views before uninstalling the module.* 
