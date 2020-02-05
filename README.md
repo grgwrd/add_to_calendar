@@ -2,7 +2,6 @@
 
 #### Drupal 8 module to generate calendar links for adding events to calendar with Send Email, Google, Yahoo, and ICS download.
 
-#### Demo the module here https://spencerart.ku.edu/calendar
 ## Getting Started:
 ### 1. Create content type for calendar event.
 ##### REQUIRED FIELDS FOR CONTENT TYPE:
