@@ -1,14 +1,14 @@
 {
-  "name": "drupal/add_to_calendar_field",
+  "name": "sma/add_to_calendar",
   "type": "drupal-module",
-  "description": "Add event to calendar links.",
+  "description": "Add to calendar field for SMA calendar feed",
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
-  "homepage": "https://www.drupal.org/project/add_to_calendar_field",
+  "homepage": "https://www.drupal.org/project/add_to_calendar",
   "minimum-stability": "dev",
   "support": {
-    "issues": "https://www.drupal.org/project/issues/add_to_calendar_field",
-    "source": "http://cgit.drupalcode.org/add_to_calendar_field"
+    "issues": "https://www.drupal.org/project/issues/add_to_calendar",
+    "source": "http://cgit.drupalcode.org/add_to_calendar"
   },
   "require": { }
 }

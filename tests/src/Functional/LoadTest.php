@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\add_to_calendar_field\Functional;
+namespace Drupal\Tests\add_to_calendar\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
@@ -8,7 +8,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Simple test to ensure that main page loads with module enabled.
  *
- * @group add_to_calendar_field
+ * @group add_to_calendar
  */
 class LoadTest extends BrowserTestBase {
 
@@ -17,7 +17,7 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['add_to_calendar_field'];
+  public static $modules = ['add_to_calendar'];
 
   /**
    * A user with permission to administer site configuration.

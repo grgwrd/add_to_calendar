@@ -1,5 +1,12 @@
 <?php
-namespace Drupal\add_to_calendar_field\Entity;
+/**
+ * Created by PhpStorm.
+ * User: grg3
+ * Date: 9/19/18
+ * Time: 3:37 PM
+ */
+
+namespace Drupal\add_to_calendar\Entity;
 use \Datetime;
 use \Datetimezone;
 
@@ -9,10 +16,6 @@ class Event
 {
     //fields from view replacement pattern
     protected $title;
-
-    protected $startDate;
-
-    protected $endDate;
 
     protected $from;
 
@@ -46,63 +49,14 @@ class Event
         $this->description = $description;
     }
 
-    public function __construct($nid)
+    public function __construct($title, $from, $to, $description, $location)
     {
+      $this->title = $title;
+      $this->description = $description;
+      $this->location = $location;
 
-        $node = Node::load($nid);
-
-        $title = $node->get('title')->getValue();
-        $this->setTitle($title[0]['value']);
-
-        $location = $node->get('field_event_location')->getValue();
-        $this->setLocation($location[0]['value']);
-
-        $startDate = $node->get('field_event_start_date_time')->getValue();
-        $this->setStartDate($startDate);
-
-        $endDate = $node->get('field_event_end_date_time')->getValue();
-        $this->setEndDate($endDate);
-
-        $description = $node->get('field_event_description')->getValue();
-        $this->setDescription($description[0]['value']);
-
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * @param mixed $startDate
-     */
-    public function setStartDate($startDate)
-    {
-        $this->startDate = str_replace('T', ' ', $startDate[0]['value']);
-
-        $this->setFrom($this->startDate);
-    }
-
-    /**
-     * @param mixed $endDate
-     */
-    public function setEndDate($endDate)
-    {
-        $this->endDate =  str_replace('T', ' ', $endDate[0]['value']);;
-
-        $this->setTo($this->endDate);
+      $this->setFrom($from);
+      $this->setTo($to);
     }
 
     /**
@@ -110,7 +64,7 @@ class Event
      */
     public function getLocation()
     {
-        return $this->location;
+      return $this->location;
     }
 
     /**
@@ -118,9 +72,8 @@ class Event
      */
     public function getTitle()
     {
-        return $this->title;
+      return $this->title;
     }
-
     /**
      * @return mixed
      */
@@ -128,45 +81,68 @@ class Event
     {
         return $this->description;
     }
-
     /**
      * @return mixed
      */
     public function getTo()
     {
-        return $this->to;
+      return $this->to;
     }
-
-    /**
-     * @param mixed $endDate
-     */
-    public function setTo($endDate)
-    {
-        $timezone = new DateTimeZone('America/Chicago');
-
-        $to = new Datetime($endDate, $timezone);
-
-        $this->to = $to;
-    }
-
     /**
      * @return mixed
      */
     public function getFrom()
     {
-        return $this->from;
+      return $this->from;
+    }
+    /**
+     * @param mixed $endDate
+     */
+    public function setFrom($from)
+    {
+
+      str_replace('T', ' ', $from);
+//
+//      date_default_timezone_set("UTC");
+
+      $timezone = new DateTimeZone("UTC");
+      //$timezone = new DateTimeZone('America/Chicago');
+
+
+      try {
+        $from = new Datetime($from);
+        date_default_timezone_get();
+        $from->setTimezone($timezone);
+      } catch (\Exception $e) {
+        throwException($e);
+      }
+
+      $this->from = $from;
     }
 
     /**
      * @param mixed $startDate
      */
-    public function setFrom($startDate)
+    public function setTo($to)
     {
-        $timezone = new DateTimeZone('America/Chicago');
 
-        $from = new Datetime($startDate, $timezone);
+      str_replace('T', ' ', $to);
 
-        $this->from = $from;
+      //date_default_timezone_set("UTC");
+
+      $timezone = new DateTimeZone("UTC");
+
+      try {
+        $to = new Datetime($to, $timezone);
+        date_default_timezone_get();
+        $to->setTimezone($timezone);
+      } catch (\Exception $e) {
+        throwException($e);
+      }
+
+      $this->to = $to;
     }
+
+
 
 }

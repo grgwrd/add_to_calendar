@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\add_to_calendar_field\Entity;
+namespace Drupal\add_to_calendar\Entity;
 
 use DateTime;
 
-use Drupal\add_to_calendar_field\Generators\Ics;
-use Drupal\add_to_calendar_field\Generators\IcsFile;
-use Drupal\add_to_calendar_field\Generators\Yahoo;
-use Drupal\add_to_calendar_field\Generators\Google;
-use Drupal\add_to_calendar_field\Exceptions\InvalidLink;
+use Drupal\add_to_calendar\Generators\Ics;
+use Drupal\add_to_calendar\Generators\IcsFile;
+use Drupal\add_to_calendar\Generators\Yahoo;
+use Drupal\add_to_calendar\Generators\Google;
+use Drupal\add_to_calendar\Exceptions\InvalidLink;
 
 /**
  * @property string $title

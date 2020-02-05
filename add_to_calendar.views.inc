@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains add_to_calendar_field\add_to_calendar_field.views.inc..
+ * Contains add_to_calendar\add_to_calendar.views.inc..
  * Provide a custom views field data that isn't tied to any other module. */
 
 use Drupal\Component\Utility\NestedArray;
@@ -16,7 +16,7 @@ use Drupal\system\ActionConfigEntityInterface;
 /**
 * Implements hook_views_data().
 */
-function add_to_calendar_field_views_data() {
+function add_to_calendar_views_data() {
 
     $data['views']['table']['group'] = t('Custom Global');
     $data['views']['table']['join'] = [
@@ -26,8 +26,8 @@ function add_to_calendar_field_views_data() {
 
 
     $data['views']['add_to_calendar'] = [
-        'title' => t('Add To Calendar Field'),
-        'help' => t('Add this field to include link to add to user calendar'),
+        'title' => t('Add To Calendar'),
+        'help' => t('Add this field to include links to add to use calendar event content type'),
         'field' => [
             'id' => 'add_to_calendar',
         ],

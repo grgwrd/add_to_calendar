@@ -1,0 +1,18 @@
+add_to_calendar.calendar_event_type:
+  title: Configure Add to Calendar settings
+  description: 'Configure settings for content type fields and calendar event links.'
+  parent: add_to_calendar.menu.config
+  route_name: add_to_calendar.calendar_event_type
+  weight: 0
+
+add_to_calendar.calendar_event_links_settings:
+  title: Calendar event links settings
+  description: 'Disable or enable calendar event links for page'
+  parent: add_to_calendar.menu.config
+  route_name: add_to_calendar.calendar_event_links_settings
+  weight: 1
+
+add_to_calendar.menu.config:
+  title: Add to Calendar Configuration
+  parent: system.admin_config
+  route_name: system.add_to_calendar

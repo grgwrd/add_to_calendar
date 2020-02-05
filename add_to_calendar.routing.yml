@@ -1,0 +1,50 @@
+send_mail.SendEventEmail:
+  path: 'send-mail/{node}'
+  defaults:
+    _title: 'Send Event Email'
+    _controller: '\Drupal\add_to_calendar\Controller\CalendarController::sendEventEmail'
+  options:
+      parameters:
+        node:
+          type: entity:node
+  requirements:
+      _access: 'TRUE'
+
+download_calendar_event.DownloadCalendarEvent:
+  path: 'download/calendar-event/{node}'
+  defaults:
+    _title: 'Download Calendar Event'
+    _controller: '\Drupal\add_to_calendar\Controller\CalendarController::downloadCalendarEvent'
+  options:
+    parameters:
+      node:
+        type: entity:node
+  requirements:
+    _access: 'TRUE'
+
+add_to_calendar.calendar_event_type:
+  path: '/admin/config/add_to_calendar_event_type'
+  defaults:
+    _form: '\Drupal\add_to_calendar\Form\CalendarEventType'
+    _title: 'Calendar Event Content Type'
+  requirements:
+    _permission: 'access administration pages'
+
+add_to_calendar.calendar_event_links_settings:
+  path: '/admin/config/calendar_event_links_settings'
+  defaults:
+    _form: '\Drupal\add_to_calendar\Form\CalendarLinksType'
+    _title: 'Calendar Event Content Type'
+  requirements:
+    _permission: 'access administration pages'
+
+system.add_to_calendar:
+  path: '/admin/config/add_to_calendar'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Add to Calendar configuration'
+  requirements:
+    _permission: 'access administration pages'
+
+
+

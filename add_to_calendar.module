@@ -1,0 +1,250 @@
+<?php
+
+/**
+ * @file
+ * Contains add_to_calendar.module.
+ */
+
+use \Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\node\Entity\Node;
+use Drupal\add_to_calendar\Entity\LinkCal;
+use Drupal\add_to_calendar\Entity\Event;
+use Drupal\Core\Url;
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Link;
+
+/**
+ * Implements hook_help().
+ */
+function add_to_calendar_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the add_to_calendar module.
+    case 'help.page.add_to_calendar':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Add to calendar field for SMA calendar feed') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function add_to_calendar_theme() {
+  return [
+    'add_to_calendar' => [
+      'variables' => ['nid'=>NULL, 'calendar_events'=>[]]
+    ],
+    'view_add_to_calendar' => [
+      'variables' => ['nid'=>NULL, 'calendar_events'=>[]]
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function add_to_calendar_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display)
+{
+  /*
+   * Add to calendar field builds calendar links from node content set by admin user in Drupal.
+   * The user must build a content type and set the configurations for machine name values.
+   * Otherwise, when content type machine name is not present calendar links should not build.
+   */
+  //get the user given node machine name from admin config (CalendarEventType)
+  $contentConfig = Drupal::config('calendar_event_type.settings');
+  $eventType = $contentConfig->get('name_of_content_type');
+  /*
+   * match incoming content type type with calendar event type for module
+   */
+  $contentType = $entity->bundle();
+  if($eventType == $contentType){
+    //get node id and for calendar event links
+    $nid = $entity->id();
+    $link = getCalendarEventLinks($nid);
+    $calendarEvents = getCalendarEventFields($nid, $link);
+    /*
+     * find the weights of each field and attach
+     * add_to_calendar template to the last weight.
+     * May add more configuration to have this set by drupal admin.
+     */
+    $eventWeight = 0;
+    foreach($build as $key=>$value){
+      if(is_array($value) AND array_key_exists('#weight', $value)){
+        $tempWeight = $value['#weight'];
+        if($tempWeight > $eventWeight){
+          $eventWeight = $tempWeight + 1;
+        }
+      }
+    }
+    /*
+     * return calendar event links to page
+     */
+    $build['add_to_calendar'] = array(
+      '#theme' => 'add_to_calendar',
+      '#weight' => $eventWeight,
+      '#calendar_events' => $calendarEvents,
+      '#nid'=>$nid,
+      '#attached' => array(
+        'library' => array(
+          'add_to_calendar/global_css',
+          'add_to_calendar/global_js',
+        ),
+      )
+    );
+  } // end if content type matches calendar event type
+}
+/**
+ * Implements hook_mail().
+ */
+function add_to_calendar_mail($key, &$message, $params)
+{
+    //basic site configurations
+    $site_config = Drupal::config('system.site');
+    $email = $site_config->get('mail');
+
+    $options = array(
+        'langcode' => $message['langcode'],
+    );
+
+    $attachments = array(
+        'filecontent' => $params['ics'],
+        'filename' => 'calendar-event.ics',
+        'filemime' => 'text/calendar',
+    );
+
+    switch ($key) {
+        case 'send_ics_file':
+            $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+            $message['from'] = $email;
+            $message['subject'] = $params['subject'];
+            $message['params']['attachments'][] = $attachments;
+            $message['body'][] = $params['message'];
+          break;
+    }
+}
+
+function getNodeCalendarEvent($nid)
+{
+  /*
+  * Loop through fields and match user given machine with the actual node machine name.
+  */
+  $node = Node::load($nid);
+  //get the user given node machine name from admin config (CalendarEventType)
+  $contentConfig = Drupal::config('calendar_event_type.settings');
+  $event = NULL;
+  if ($contentConfig) {
+    $eventFields = ['field_name_for_title_of_event', 'field_name_for_start_date',
+      'field_name_for_end_date', 'field_name_for_location', 'field_name_for_description'];
+    // build event data and
+    $eventData = [];
+    //loop through to get configuration field and get node field value
+    foreach ($eventFields as $field) {
+
+      $fieldName = $contentConfig->get($field);
+      if($fieldName){
+        $data = $node->get($contentConfig->get($field))->getValue();
+        if ($data) {
+          $eventData[$field] = $data;
+        } else {
+          $eventData[$field] = NULL;
+        }
+      }
+    }
+  //  die(dump($eventData));
+    $event = new Event(
+      $eventData['field_name_for_title_of_event'][0]['value'],
+      $eventData['field_name_for_start_date'][0]['value'],
+      $eventData['field_name_for_end_date'][0]['value'],
+      $eventData['field_name_for_description'][0]['value'],
+      $eventData['field_name_for_location'][0]['value']
+    );
+  }
+  return $event;
+}
+
+function getCalendarEventLinks($nid)
+{
+  $event = getNodeCalendarEvent($nid);
+  //generate calendar event links
+  $link = LinkCal::create($event->getTitle(), $event->getFrom(), $event->getTo())
+    ->description($event->getDescription())
+    ->address($event->getLocation());
+  return $link;
+}
+
+function getCalendarEventFields($nid, LinkCal $link){
+  $linkConfigs = Drupal::config('calendar_links_type.settings');
+  $eventFields = NULL;
+  if($linkConfigs){
+    //configuration keys for form
+    $fields = ['send_email', 'google', 'yahoo', 'download_ics'];
+    //set true false values for page display
+    $linkFields = [];
+    foreach ($fields as $field) {
+      $linkFields[$field] = $linkConfigs->get($field);
+    }
+    $calendarEvents = []; //return calendar events to front page
+    /*
+     * configurations are set to TRUE by default when installed
+     * otherwise they are set in admin configuration
+     */
+    if ($linkFields['send_email']) {
+      //create link route for send mail modal popup
+      $link_url = Url::fromRoute('send_mail.SendEventEmail', array('node' => $nid));
+      //modal popup options
+      $link_url->setOptions([
+        'attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => Json::encode(['width' => 400]),
+        ]
+      ]);
+      //markup to add ajax for send email link
+      $calendarEvents[] = array(
+        '#type' => 'markup',
+        '#markup' => Link::fromTextAndUrl(t('Send Email'), $link_url)->toString(),
+        '#attached' => ['library' => ['core/drupal.dialog.ajax']]
+      );
+    }
+    if ($linkFields['google']) {
+      //google add to calendar link
+      $calendarEvents[] = array(
+        '#type' => 'link',
+        '#title' => 'Google',
+        '#attributes' => [
+          'class' => 'close-cal-menu',
+          'target' => '_blank',
+        ],
+        '#url' => Url::fromUri($link->google()),
+      );
+    }
+    if ($linkFields['yahoo']) {
+      //yahoo add to calendar link
+      $calendarEvents[] = array(
+        '#type' => 'link',
+        '#title' => 'Yahoo',
+        '#attributes' => [
+          'class' => 'close-cal-menu',
+          'target' => '_blank',
+        ],
+        '#url' => Url::fromUri($link->yahoo()),
+      );
+    }
+    if ($linkFields['download_ics']) {
+      $url = Url::fromRoute('download_calendar_event.DownloadCalendarEvent', ['node' => $nid]);
+      $calendarEvents[] = [
+        '#title' => 'iCal',
+        '#type' => 'link',
+        '#url' => $url
+      ];
+    }
+    $eventFields = $calendarEvents;
+  }
+  /*
+   * function for calendar event links based on admin configurations
+   */
+  return $eventFields;
+}

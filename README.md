@@ -1,31 +1,33 @@
-## Add to Calendar Field module for Drupal 8 view.
+# Add To Calendar
 
-Custom module to generate calendar links for adding event to calendar with Google, Yahoo, ICS file download and Send Email Modal.
+#### Drupal 8 module to generate calendar links for adding events to calendar with Send Email, Google, Yahoo, and ICS download.
 
-*This module was developed with a specific requirement. The code in this repository is only intended as a reference guide for others. Read the requirements below for the basic implementation.*
+#### Demo the module here https://spencerart.ku.edu/calendar
+## Getting Started:
+### 1. Create content type for calendar event.
+##### REQUIRED FIELDS FOR CONTENT TYPE:
+* Title for event (text)
+* Start Date time (datetime)
+* End Date time (datetime)
 
-### Requirements:
+##### OPTIONAL FIELDS FOR CONTENT TYPE:
+* Location for event (text)
+* Description for event (text)
 
-You will need to clone or download the git project and add it to your modules directory. After installing and activating the module you will need the following setup.
+### 2. Configure add to calendar module
+* Go to admin configuration and find Add To Calendar Configuration
+* Configure Add to Calendar settings for machine name fields for your content type.
+* Clear Drupal cache to load new configuration settings.
 
-#### Create new Content Type for Event Calendar with the field names
+### 3. Optional configuration under Calendar event links settings
+* You can disable and re-enable calendar events links to display for your content type.
 
- - field_title
- - field_event_location
- - field_event_start_date_time
- - field_event_end_date_time
- - field_event_description
+# Add To Calendar for Drupal 8 Views
 
-#### Create new View for Calendar Feed to show Event Calendar Content type
+#### You can add a field for the calendar links inside of a view. You must follow these directions otherwise the view will not work.
+* Create a view that uses your content type.
+* If you are using fields you can find a field for Add to Calendar Field.
+* Look under the Global category and select Add To Calendar Field.
+* Then it should display as part of your view.
 
-- Show Content of Type Event Calendar sorted by Newest
-- Create Page or Block
-- Display Format Unformatted list fields
-- Save and Continue
-
-#### Configure Calendar Feed View
-- Add all the fields from your Event Calendar content type
-  - Filter by content and search for you Event Calendar content type
-- Add the field from Add to Calendar module
-  - Filter by Global and search for add to calendar
-  - **Be sure to install and enable the Add to Calendar Field Module**
+<h4 style="color:red;">CAUTION: Adding the Add to Calendar field to your view will destroy your view if you ever decide to uninstall the Add To Calendar Field module. Be sure to delete the Add To Calendar field from your views before uninstalling the module. </h4>

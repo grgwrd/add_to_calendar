@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\add_to_calendar_field\Exceptions;
+namespace Drupal\add_to_calendar\Exceptions;
 
 use DateTime;
 use Exception;

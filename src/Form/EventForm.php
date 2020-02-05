@@ -1,12 +1,20 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: grg3
+ * Date: 8/20/18
+ * Time: 2:46 PM
+ */
 
-namespace Drupal\add_to_calendar_field\Form;
+namespace Drupal\add_to_calendar\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal;
 
+use Drupal\add_to_calendar\Controller\CalendarController;
 /**
  * EventForm class.
  */
@@ -14,8 +22,9 @@ class EventForm extends FormBase
 {
 
     private $nid;
+
     private $configName;
-    
+
     /**
      * Gets the configuration names that will be editable.
      *
@@ -80,7 +89,6 @@ class EventForm extends FormBase
             '#attributes' => ['placeholder' => $this->t('address@email.com')]
         );
 
-
         $form['ics'] = array(
             '#title' => 'ics_file',
             '#type' => 'hidden',
@@ -93,8 +101,8 @@ class EventForm extends FormBase
             '#value' => $options['nid'],
         );
 
-
         $form['actions'] = array('#type' => 'actions');
+
         $form['actions']['send'] = [
             '#type' => 'submit',
             '#value' => $this->t('Send Email'),
@@ -117,54 +125,49 @@ class EventForm extends FormBase
      * AJAX callback handler that displays any errors or a success message.
      */
     public function submitEventFormAjax(array $form, FormStateInterface $form_state) {
-
         $response = new AjaxResponse();
-
         $email = $form_state->getValue('email');
         $ics = $form_state->getValue('ics');
-
+        $nid = $form_state->getValue('nid');
         // If there are any form errors, re-display the form.
         if ($form_state->hasAnyErrors()) {
             $response->addCommand(new OpenModalDialogCommand("There was an error sending your email", $form, ['width' => 800]));
         }
         else {
+          /*
+           * Prepare to send email calendar invite.
+           */
+            $eventTitle = getNodeCalendarEvent($nid)->getTitle();
             $mailManager = \Drupal::service('plugin.manager.mail');
-            $module = 'add_to_calendar_field';
+            $module = 'add_to_calendar';
             $key = 'send_ics_file';
             $to = $email;
-            $params['message'] = 'Add Event to your calendar. Looking forward to seeing you!';
-            $params['title'] = 'Add Event to Calendar';
+            $params['message'] = 'Invitation sent for '.$eventTitle.'.';
+            $params['title'] = 'Calendar invite: '.$eventTitle;
+            $params['subject'] = 'Add event to calendar: '.$eventTitle;
             $params['ics'] = $ics;
             $langcode = 'en';
             $send = TRUE;
-
             $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
-
             if ($result['result'] !== true) {
                 drupal_set_message('There was a problem sending your message and it was not sent.', 'error');
                 $response->addCommand(new OpenModalDialogCommand($this->t('Error'), $form, ['width' => 800]));
             }
             else {
-
                 $modal = [];
                 $modal['#prefix'] = '<div id="modal-form-success">';
                 $modal['#suffix'] = '</div>';
-
                 // The status messages that will contain any form errors.
                 $modal['status_messages'] = [
                     '#type' => 'status_messages',
                     '#weight' => -10,
                 ];
-
                 drupal_set_message('Your email was sent.', 'status');
                 $response->addCommand(new OpenModalDialogCommand($this->t('Success'), $modal, ['width' => 800]));
             }
-
         }
-
         return $response;
     }
-
     /**
      * {@inheritdoc}
      *
@@ -175,12 +178,10 @@ class EventForm extends FormBase
         if (!$form_state->getValue('name') || empty($form_state->getValue('name'))) {
             $form_state->setErrorByName('name', $this->t('You must enter a name.'));
         }
-
         if (!$form_state->getValue('email') || !filter_var($form_state->getValue('email'), FILTER_VALIDATE_EMAIL)) {
             $form_state->setErrorByName('email', $this->t('Entered an invalid email address.'));
         }
     }
-
     /**
      * {@inheritdoc}
      */

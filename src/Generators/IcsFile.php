@@ -1,9 +1,16 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: grg3
+ * Date: 8/23/18
+ * Time: 12:32 PM
+ */
 
-namespace Drupal\add_to_calendar_field\Generators;
+namespace Drupal\add_to_calendar\Generators;
 
-use Drupal\add_to_calendar_field\Entity\LinkCal;
-use Drupal\add_to_calendar_field\Entity\Generator;
+
+use Drupal\add_to_calendar\Entity\LinkCal;
+use Drupal\add_to_calendar\Entity\Generator;
 
 class IcsFile implements Generator
 {

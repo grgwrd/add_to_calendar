@@ -1,5 +1,0 @@
-name: 'Add to Calendar Field'
-type: module
-description: 'Add to Calendar Field for Calendar Feed View'
-core: 8.x
-package: 'Custom Modules'

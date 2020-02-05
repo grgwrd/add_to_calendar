@@ -1,0 +1,16 @@
+global_css:
+  version: 1.x
+  css:
+    layout:
+      css/add_to_calendar.css: {}
+    theme:
+      css/add_to_calendar.css: {}
+global_js:
+  js:
+    js/add_to_calendar.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/drupal.dialog.ajax
+    - core/jquery.form

@@ -1,0 +1,5 @@
+name: 'Add to Calendar'
+type: module
+description: 'Add calendar event links for content type'
+core: 8.x
+package: 'SMA Modules'

@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\add_to_calendar_field\Generators;
+namespace Drupal\add_to_calendar\Generators;
 
-use Drupal\add_to_calendar_field\Entity\LinkCal;
-use Drupal\add_to_calendar_field\Entity\Generator;
+use Drupal\add_to_calendar\Entity\LinkCal;
+use Drupal\add_to_calendar\Entity\Generator;
 
 class Ics implements Generator
 {
@@ -18,6 +18,7 @@ class Ics implements Generator
           'SUMMARY:'.$link->title, ];
 
         if ($link->description) {
+//            $url[] = 'DESCRIPTION:'.addcslashes($link->description, "\n");
             $url[] = 'DESCRIPTION:'.$link->description;
         }
         if ($link->address) {

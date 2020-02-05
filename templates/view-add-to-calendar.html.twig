@@ -1,0 +1,17 @@
+<!-- Add you custom twig html here -->
+
+<div class="dropdown">
+    <button class="dropbtn-{{ nid }} add-to-cal dropbtn" id="{{ nid }}">Add to Calendar</button>
+    <div class="dropdown-content-{{ nid }} dropdown-content" style="display:none">
+      {% for calendar_event in calendar_events %}
+        {{ calendar_event }}
+      {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
+

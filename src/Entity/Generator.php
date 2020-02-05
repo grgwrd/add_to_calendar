@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\add_to_calendar_field\Entity;
+namespace Drupal\add_to_calendar\Entity;
 
 interface Generator
 {
