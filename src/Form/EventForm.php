@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 8/20/18
- * Time: 2:46 PM
- */
 
 namespace Drupal\add_to_calendar\Form;
 

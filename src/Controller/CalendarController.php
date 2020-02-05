@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 8/20/18
- * Time: 1:32 PM
- */
 
 namespace Drupal\add_to_calendar\Controller;
 
@@ -63,7 +57,6 @@ class CalendarController extends ControllerBase {
 
     public function downloadCalendarEvent(NodeInterface $node){
 
-        //$link = $this->getCalendarEventLinks($node->id());
       $link = getCalendarEventLinks($node->id());
         $filename = "calendar-event.ics";
         $icsFile = $link->icsFile();
@@ -84,7 +77,6 @@ class CalendarController extends ControllerBase {
       /*
        * Builds modal form to send email along with calendar event ics file
        */
-     // $link = $this->getCalendarEventLinks($node->id());
       $link = getCalendarEventLinks($node->id());
 
       $response = new AjaxResponse();
@@ -115,4 +107,3 @@ class CalendarController extends ControllerBase {
       return $response;
     }
 }
-

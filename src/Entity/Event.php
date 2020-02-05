@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 9/19/18
- * Time: 3:37 PM
- */
 
 namespace Drupal\add_to_calendar\Entity;
 use \Datetime;

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: grg3
- * Date: 8/23/18
- * Time: 12:32 PM
- */
 
 namespace Drupal\add_to_calendar\Generators;
 
