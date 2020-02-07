@@ -173,7 +173,9 @@ function getCalendarEventLinks($nid)
     ->address($event->getLocation());
   return $link;
 }
-
+/*
+ * For calendar event links based on admin configurations.
+ */
 function getCalendarEventFields($nid, LinkCal $link){
   $linkConfigs = Drupal::config('calendar_links_type.settings');
   $calendarEvents = NULL; //return calendar events to front page
@@ -240,8 +242,5 @@ function getCalendarEventFields($nid, LinkCal $link){
       ];
     }
   }
-  /*
-   * function for calendar event links based on admin configurations
-   */
   return $calendarEvents;
 }

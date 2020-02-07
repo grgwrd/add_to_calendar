@@ -94,14 +94,9 @@ class Event
      */
     public function setFrom($from)
     {
-
       str_replace('T', ' ', $from);
-//
-//      date_default_timezone_set("UTC");
 
       $timezone = new DateTimeZone("UTC");
-      //$timezone = new DateTimeZone('America/Chicago');
-
 
       try {
         $from = new Datetime($from);
@@ -110,7 +105,6 @@ class Event
       } catch (\Exception $e) {
         throwException($e);
       }
-
       $this->from = $from;
     }
 
@@ -119,10 +113,7 @@ class Event
      */
     public function setTo($to)
     {
-
       str_replace('T', ' ', $to);
-
-      //date_default_timezone_set("UTC");
 
       $timezone = new DateTimeZone("UTC");
 
@@ -133,7 +124,6 @@ class Event
       } catch (\Exception $e) {
         throwException($e);
       }
-
       $this->to = $to;
     }
 
