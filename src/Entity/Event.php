@@ -112,7 +112,7 @@ class Event
 
     private function setDatetimeInterval($datetime){
 
-        //replace empty space with T for timezone string
+        //replace T with empty space for timezone string
         str_replace('T', ' ', $datetime);
 
         $eventDatetime = NULL; //return value for function
