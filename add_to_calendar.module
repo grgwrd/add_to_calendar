@@ -30,6 +30,19 @@ function add_to_calendar_help($route_name, RouteMatchInterface $route_match) {
 }
 
 /**
+ * Implements hook_install().
+ */
+function add_to_calendar_install() {
+    // Set default values for config which require dynamic values.
+    \Drupal::configFactory()->getEditable('calendar_links_type.settings')
+        ->set('send_email', 1)
+        ->set('google', 1)
+        ->set('yahoo', 1)
+        ->set('download_ics', 1)
+        ->save();
+}
+
+/**
  * Implements hook_theme().
  */
 function add_to_calendar_theme() {
@@ -144,6 +157,7 @@ function getNodeCalendarEvent($nid)
     foreach ($eventFields as $field) {
 
       $fieldName = $contentConfig->get($field);
+
       if($fieldName){
         $data = $node->get($fieldName)->getValue();
         if ($data) {
@@ -153,6 +167,7 @@ function getNodeCalendarEvent($nid)
         }
       }
     }
+
     $event = new Event(
       $eventData['field_name_for_title_of_event'][0]['value'],
       $eventData['field_name_for_start_date'][0]['value'],
@@ -161,12 +176,14 @@ function getNodeCalendarEvent($nid)
       $eventData['field_name_for_location'][0]['value']
     );
   }
+
   return $event;
 }
 
 function getCalendarEventLinks($nid)
 {
   $event = getNodeCalendarEvent($nid);
+
   //generate calendar event links
   $link = LinkCal::create($event->getTitle(), $event->getFrom(), $event->getTo())
     ->description($event->getDescription())

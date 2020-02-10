@@ -4,6 +4,8 @@ namespace Drupal\add_to_calendar\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Class CalendarLinksType.
@@ -34,6 +36,8 @@ class CalendarLinksType extends ConfigFormBase {
 
     // save settings for Content type configurations
     $config = $this->config('calendar_links_type.settings');
+
+   // die(dump($config->get("send_email")));
 
     $form['#tree'] = TRUE;
 

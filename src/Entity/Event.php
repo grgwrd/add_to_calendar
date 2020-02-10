@@ -3,7 +3,7 @@
 namespace Drupal\add_to_calendar\Entity;
 use \Datetime;
 use \Datetimezone;
-
+use DateInterval;
 use \Drupal\node\Entity\Node;
 
 class Event
@@ -49,6 +49,7 @@ class Event
       $this->description = $description;
       $this->location = $location;
 
+
       $this->setFrom($from);
       $this->setTo($to);
     }
@@ -80,6 +81,7 @@ class Event
      */
     public function getTo()
     {
+
       return $this->to;
     }
     /**
@@ -90,41 +92,49 @@ class Event
       return $this->from;
     }
     /**
-     * @param mixed $endDate
+     * @param mixed $from
      */
     public function setFrom($from)
     {
-      str_replace('T', ' ', $from);
+        $from = $this->setDatetimeInterval($from);
 
-      $timezone = new DateTimeZone("UTC");
-
-      try {
-        $from = new Datetime($from);
-        date_default_timezone_get();
-        $from->setTimezone($timezone);
-      } catch (\Exception $e) {
-        throwException($e);
-      }
-      $this->from = $from;
+        $this->from = $from;
     }
 
     /**
-     * @param mixed $startDate
+     * @param mixed $to
      */
     public function setTo($to)
     {
-      str_replace('T', ' ', $to);
-
-      $timezone = new DateTimeZone("UTC");
-
-      try {
-        $to = new Datetime($to, $timezone);
-        date_default_timezone_get();
-        $to->setTimezone($timezone);
-      } catch (\Exception $e) {
-        throwException($e);
-      }
+      $to = $this->setDatetimeInterval($to);
       $this->to = $to;
+    }
+
+    private function setDatetimeInterval($datetime){
+
+        //replace empty space with T for timezone string
+        str_replace('T', ' ', $datetime);
+
+        $eventDatetime = NULL; //return value for function
+
+        //convert time from drupal system datetime to relevant datetime
+        try {
+            $systemTZ = date_default_timezone_get();
+
+            $drupalDateTime = new DateTimeZone($systemTZ);
+            $utcTimezone = new DateTimeZone('UTC');
+            $eventDatetime = new DateTime($datetime, $drupalDateTime);
+            $utcDateTime = new DateTime($datetime, $utcTimezone);
+
+            $offset = $drupalDateTime->getOffset($utcDateTime);
+            $myInterval = DateInterval::createFromDateString((string)$offset . 'seconds');
+            $eventDatetime->add($myInterval);
+
+        } catch (\Exception $e) {
+            throwException($e);
+        }
+
+        return $eventDatetime;
     }
 
 
