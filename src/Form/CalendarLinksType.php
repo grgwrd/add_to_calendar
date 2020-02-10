@@ -37,8 +37,6 @@ class CalendarLinksType extends ConfigFormBase {
     // save settings for Content type configurations
     $config = $this->config('calendar_links_type.settings');
 
-   // die(dump($config->get("send_email")));
-
     $form['#tree'] = TRUE;
 
     $form['header_info'] = [
