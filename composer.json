@@ -1,14 +1,14 @@
 {
-  "name": "sma/add_to_calendar",
+  "name": "add_to_calendar",
   "type": "drupal-module",
-  "description": "Add to calendar field for SMA calendar feed",
+  "description": "Add to calendar field.",
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
   "homepage": "https://www.drupal.org/project/add_to_calendar",
   "minimum-stability": "dev",
   "support": {
-    "issues": "https://www.drupal.org/project/issues/add_to_calendar",
-    "source": "http://cgit.drupalcode.org/add_to_calendar"
+    "issues": "https://github.com/grgwrd/add_to_calendar/issues",
+    "source": "https://github.com/grgwrd/add_to_calendar"
   },
   "require": { }
 }
